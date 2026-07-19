@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yakitori Restaurant Feasibility Analysis — Menlo Park, CA</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B2A4A;--gold:#C5A572;--gold-light:#E8D5B5;--bg-alt:#F7F8FA;--text:#2D3748;--text-light:#4A5568;--text-muted:#718096;--border:#E2E8F0;--success:#38A169;--warning:#D69E2E;--danger:#E53E3E;--white:#FFFFFF;--shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.06);--shadow-md:0 4px 6px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.06);--shadow-lg:0 10px 15px rgba(0,0,0,0.07),0 4px 6px rgba(0,0,0,0.05)}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--text);line-height:1.65;background:var(--white);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{letter-spacing:-0.02em;font-weight:700;color:var(--navy);line-height:1.25}
+h2{font-size:1.75rem;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:2px solid var(--gold)}
+h3{font-size:1.25rem;margin-bottom:1rem;color:var(--navy)}
+h4{font-size:1.05rem;margin-bottom:0.5rem}
+p{margin-bottom:1rem}
+nav{position:fixed;top:0;left:0;right:0;background:var(--navy);z-index:1000;box-shadow:var(--shadow-md)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;padding:0 2rem;height:56px;gap:0.25rem;overflow-x:auto}
+.nav-brand{color:var(--gold);font-weight:700;font-size:1.1rem;margin-right:2rem;white-space:nowrap;letter-spacing:-0.01em}
+nav a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.8rem;padding:0.4rem 0.7rem;border-radius:4px;transition:all 0.2s;white-space:nowrap;font-weight:500}
+nav a:hover{color:var(--white);background:rgba(255,255,255,0.1)}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+section{padding:4.5rem 0}
+section:nth-child(even){background:var(--bg-alt)}
+.hero{background:var(--navy);color:var(--white);padding:7rem 0 4rem;margin-top:56px;text-align:center}
+.hero h1{color:var(--white);font-size:2.5rem;margin-bottom:0.75rem;letter-spacing:-0.03em}
+.hero .subtitle{color:var(--gold);font-size:1.15rem;font-weight:500;margin-bottom:0.5rem}
+.hero .date{color:rgba(255,255,255,0.5);font-size:0.85rem;margin-bottom:2.5rem}
+.verdict-badge{display:inline-flex;align-items:center;gap:0.75rem;background:rgba(197,165,114,0.12);border:2px solid var(--gold);border-radius:8px;padding:1rem 2rem;margin:1.5rem auto}
+.verdict-badge .label{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);font-weight:600}
+.verdict-badge .verdict{font-size:1.5rem;font-weight:800;color:var(--gold)}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin:2.5rem 0}
+.metric-card{background:var(--white);border-radius:8px;padding:1.5rem;box-shadow:var(--shadow-md);border-top:3px solid var(--gold);text-align:center}
+.metric-card .value{font-size:2rem;font-weight:800;color:var(--navy);letter-spacing:-0.02em}
+.metric-card .label{font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.35rem;font-weight:600}
+.metric-card .note{font-size:0.72rem;color:var(--text-light);margin-top:0.25rem}
+.callout{background:var(--bg-alt);border-left:4px solid var(--gold);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 6px 6px 0}
+.callout.warn{border-left-color:var(--warning);background:#FFFDF5}
+.callout.danger{border-left-color:var(--danger);background:#FFF5F5}
+.callout.success{border-left-color:var(--success);background:#F0FFF4}
+table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.88rem}
+thead th{background:var(--navy);color:var(--white);padding:0.7rem 1rem;text-align:left;font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em}
+tbody td{padding:0.65rem 1rem;border-bottom:1px solid var(--border)}
+tbody tr:nth-child(even){background:var(--bg-alt)}
+tbody tr:hover{background:rgba(197,165,114,0.06)}
+td.num,th.num{text-align:right}
+td.neg{color:var(--danger)}
+td.pos{color:var(--success)}
+.bar-chart{margin:1.5rem 0}
+.bar-row{display:flex;align-items:center;margin-bottom:0.6rem}
+.bar-label{width:140px;font-size:0.82rem;font-weight:600;color:var(--text);flex-shrink:0}
+.bar-track{flex:1;background:#EDF2F7;border-radius:4px;height:28px;position:relative;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:0.75rem;font-weight:700;color:var(--white);transition:width 0.6s ease}
+.bar-fill.navy{background:var(--navy)}
+.bar-fill.gold{background:var(--gold)}
+.bar-fill.success{background:var(--success)}
+.bar-fill.warning{background:var(--warning)}
+.bar-fill.danger{background:var(--danger)}
+.risk-high{background:#FED7D7;color:#9B2C2C;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.75rem;font-weight:600}
+.risk-med{background:#FEFCBF;color:#975A16;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.75rem;font-weight:600}
+.risk-low{background:#C6F6D5;color:#276749;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.75rem;font-weight:600}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:1.5rem 0}
+.prereq{background:var(--white);border:2px solid var(--gold);border-radius:8px;padding:1.5rem;margin:1rem 0}
+.prereq .num{display:inline-block;background:var(--navy);color:var(--gold);width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-weight:700;font-size:0.85rem;margin-right:0.5rem}
+footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:2rem 0;font-size:0.8rem;text-align:center}
+footer strong{color:var(--gold)}
+@media(max-width:768px){
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+  .hero h1{font-size:1.75rem}
+  .nav-inner{padding:0 1rem}
+  .container{padding:0 1rem}
+  section{padding:3rem 0}
+  h2{font-size:1.4rem}
+  .bar-label{width:100px;font-size:0.75rem}
+  table{font-size:0.78rem}
+  thead th,tbody td{padding:0.5rem 0.6rem}
+  .metric-card .value{font-size:1.5rem}
+}
+@media(max-width:480px){
+  .metrics-grid{grid-template-columns:1fr}
+  .hero{padding:5rem 0 3rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-inner">
+<span class="nav-brand">TORI Feasibility</span>
+<a href="#executive-summary">Summary</a>
+<a href="#market">Market</a>
+<a href="#concept">Concept</a>
+<a href="#financials">Financials</a>
+<a href="#gtm">GTM</a>
+<a href="#risk">Risk</a>
+<a href="#returns">Returns</a>
+<a href="#recommendation">Recommendation</a>
+<a href="#appendix">Appendix</a>
+</div>
+</nav>
+
+<div class="hero">
+<div class="container">
+<p class="subtitle">Feasibility Analysis</p>
+<h1>Yakitori Restaurant in Menlo Park, CA</h1>
+<p class="date">Prepared July 2026</p>
+<div class="verdict-badge">
+<div>
+<div class="label">Investment Verdict</div>
+<div class="verdict">CONDITIONAL GO</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="executive-summary">
+<div class="container">
+<h2>Executive Summary</h2>
+
+<div class="metrics-grid">
+<div class="metric-card">
+<div class="value">$900K</div>
+<div class="label">Total Investment</div>
+<div class="note">Second-gen space</div>
+</div>
+<div class="metric-card">
+<div class="value">$1.2M</div>
+<div class="label">Y2 Revenue</div>
+<div class="note">35 seats, $50 avg check</div>
+</div>
+<div class="metric-card">
+<div class="value">Month 5</div>
+<div class="label">Operating Break-Even</div>
+<div class="note">$52K monthly revenue</div>
+</div>
+<div class="metric-card">
+<div class="value">~19%</div>
+<div class="label">5-Year IRR</div>
+<div class="note">Base case, 2.1x MOIC</div>
+</div>
+</div>
+
+<p>This analysis evaluates the financial viability of opening a dedicated yakitori (charcoal-grilled skewer) restaurant in Menlo Park, California. The concept targets a verified market gap: <strong>zero dedicated yakitori restaurants exist on the entire mid-Peninsula corridor</strong> from San Francisco to San Jose, despite a population with $210K median household income and 19% Asian demographic composition.</p>
+
+<p>The recommended format is a 35-seat izakaya hybrid with a 12-seat hinoki counter facing an open binchotan grill, complemented by table seating. The concept blends theatrical counter dining with broader izakaya appeal, targeting a $50 blended average check positioned between casual izakayas ($30-40) and omakase ($80+).</p>
+
+<div class="callout">
+<strong>Bottom line:</strong> The model supports a Conditional Go. Base case returns (19% IRR, $347K NPV, 4.9-year payback) are attractive but conditional on three non-negotiable prerequisites: securing a trained yakitori-shi grill master, locking a second-generation restaurant space at favorable terms, and committing to an owner-operator model. Without all three, the risk-adjusted return falls below passive index fund alternatives.
+</div>
+</div>
+</section>
+
+<!-- MARKET OPPORTUNITY -->
+<section id="market">
+<div class="container">
+<h2>Market Opportunity</h2>
+
+<h3>Menlo Park Dining Landscape</h3>
+<p>Menlo Park's downtown Santa Cruz Avenue corridor is a mature dining market with strong foot traffic, anchored by a mix of upscale casual and fine dining. The area skews toward Mediterranean, Californian, and Asian cuisines, with multiple sushi restaurants (Kyosho, MJ Sushi, Hirotaka) but no dedicated yakitori concept. Drunken Monk on El Camino Real is the closest analog, operating as a broader izakaya with binchotan-grilled yakitori as one element of its menu, demonstrating pricing power at approximately 2x comparable South Bay izakayas.</p>
+
+<div class="two-col">
+<div>
+<h4>Demographics</h4>
+<table>
+<tbody>
+<tr><td>Population</td><td class="num">32,727</td></tr>
+<tr><td>Median household income</td><td class="num">$210,025</td></tr>
+<tr><td>Per capita income</td><td class="num">$123,422</td></tr>
+<tr><td>Avg HHI within 1mi of Santa Cruz Ave</td><td class="num">$248,661</td></tr>
+<tr><td>Asian population</td><td class="num">19% (6,133)</td></tr>
+<tr><td>College graduation rate</td><td class="num">72.7%</td></tr>
+<tr><td>Daytime employees (1mi radius)</td><td class="num">15,674</td></tr>
+<tr><td>Consumer spending (1mi radius)</td><td class="num">$283.3M</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4>Market Tailwinds</h4>
+<table>
+<tbody>
+<tr><td>Yakitori US market CAGR</td><td class="num">7.9%</td></tr>
+<tr><td>Consumer familiarity (2026)</td><td class="num">47%</td></tr>
+<tr><td>Consumer familiarity (2018)</td><td class="num">18%</td></tr>
+<tr><td>New housing units (pipeline)</td><td class="num">500+</td></tr>
+<tr><td>Active Type 47 liquor licenses</td><td class="num">18</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3>Competitive Analysis</h3>
+<p>The competitive landscape reveals a critical gap. There is no dedicated yakitori restaurant on the mid-Peninsula. The nearest competitors require 15-25 minute drives:</p>
+
+<table>
+<thead>
+<tr><th>Restaurant</th><th>Location</th><th>Distance</th><th>Format</th><th>Avg Check</th><th>Rating</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Drunken Monk</strong></td><td>Menlo Park (El Camino)</td><td>Local</td><td>Izakaya (yakitori as subset)</td><td>$50-70</td><td>4.0★</td></tr>
+<tr><td><strong>Kokko</strong></td><td>San Mateo</td><td>~15 min</td><td>Dedicated yakitori</td><td>$31-50</td><td>4.4★</td></tr>
+<tr><td><strong>Mokutanya</strong></td><td>Burlingame</td><td>~20 min</td><td>Yakitori + ramen</td><td>$31-50</td><td>4.5★</td></tr>
+<tr><td><strong>Sumiya</strong></td><td>Santa Clara</td><td>~25 min</td><td>Charcoal yakitori</td><td>$31-50</td><td>4.4★</td></tr>
+<tr><td><strong>Gaku Yakitori</strong></td><td>San Jose</td><td>~30 min</td><td>Check-off yakitori</td><td>$31-50</td><td>4.3★</td></tr>
+<tr><td><strong>Yakitori Edomasa</strong></td><td>SF Japantown</td><td>~35 min</td><td>Traditional (Tokyo origin)</td><td>$30 set</td><td>4.6★</td></tr>
+</tbody>
+</table>
+
+<div class="callout success">
+<strong>Key finding:</strong> Sumiya in Santa Clara (25 min away) has 2-hour waits on Friday nights and enforces 90-minute dining limits, proving strong unmet demand for yakitori in the broader Bay Area. A Menlo Park location would capture this demand closer to its source.
+</div>
+
+<h3>Skewer Pricing Benchmarks</h3>
+<div class="bar-chart">
+<div class="bar-row"><span class="bar-label">Chicken thigh</span><div class="bar-track"><div class="bar-fill navy" style="width:38%">$4.25-$5.50</div></div></div>
+<div class="bar-row"><span class="bar-label">Beef tongue</span><div class="bar-track"><div class="bar-fill navy" style="width:46%">$6.50</div></div></div>
+<div class="bar-row"><span class="bar-label">A5 Wagyu</span><div class="bar-track"><div class="bar-fill gold" style="width:72%">$8-$15.75</div></div></div>
+<div class="bar-row"><span class="bar-label">Set menus</span><div class="bar-track"><div class="bar-fill navy" style="width:85%">$23-$30</div></div></div>
+<div class="bar-row"><span class="bar-label">Menlo Park premium</span><div class="bar-track"><div class="bar-fill success" style="width:50%">+30-50%</div></div></div>
+</div>
+</div>
+</section>
+
+<!-- CONCEPT DESIGN -->
+<section id="concept">
+<div class="container">
+<h2>Concept Design</h2>
+
+<div class="two-col">
+<div>
+<h3>Format</h3>
+<p><strong>Izakaya hybrid, counter/bar-forward.</strong> A 35-seat restaurant with a 12-seat hinoki cypress counter facing an open binchotan grill station as the theatrical centerpiece, plus 23 table and bar seats. The counter-forward layout drives social media virality and justifies premium pricing for the experiential element.</p>
+
+<h4>Space Requirements</h4>
+<table>
+<tbody>
+<tr><td>Total area</td><td class="num">~1,450 sqft</td></tr>
+<tr><td>Seating</td><td class="num">35 seats</td></tr>
+<tr><td>Counter seats</td><td class="num">12</td></tr>
+<tr><td>Table/bar seats</td><td class="num">23</td></tr>
+<tr><td>Target space</td><td>Second-gen restaurant</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Positioning</h3>
+<p><strong>Premium-casual.</strong> "Menlo Park's only dedicated yakitori." Filling a verified zero-competitor gap on the entire mid-Peninsula corridor. Positioned between casual izakayas ($30-40/person) and omakase ($80+) with a $50 blended average check ($38 food + $12 beverage).</p>
+
+<h4>Revenue Mix</h4>
+<div class="bar-chart">
+<div class="bar-row"><span class="bar-label">Yakitori</span><div class="bar-track"><div class="bar-fill navy" style="width:60%">60%</div></div></div>
+<div class="bar-row"><span class="bar-label">Small plates</span><div class="bar-track"><div class="bar-fill navy" style="width:15%">15%</div></div></div>
+<div class="bar-row"><span class="bar-label">Rice/noodles</span><div class="bar-track"><div class="bar-fill navy" style="width:10%">10%</div></div></div>
+<div class="bar-row"><span class="bar-label">Beverage</span><div class="bar-track"><div class="bar-fill gold" style="width:25%">25%</div></div></div>
+</div>
+</div>
+</div>
+
+<h3>Differentiation</h3>
+<div class="metrics-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="metric-card">
+<div class="value" style="font-size:1.1rem">🔥</div>
+<div class="label">Only Binchotan Yakitori</div>
+<div class="note">Within 15 miles — verified gap</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.1rem">🍗</div>
+<div class="label">Nose-to-Tail Chicken</div>
+<div class="note">Thigh, skin, heart, gizzard, liver, neck, tsukune</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.1rem">🍶</div>
+<div class="label">Sake & Whisky Program</div>
+<div class="note">Curated selection, 78% margin</div>
+</div>
+</div>
+
+<h3>Menu Pricing Architecture</h3>
+<table>
+<thead>
+<tr><th>Category</th><th>Items</th><th class="num">Price Range</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Chicken skewers</td><td>Momo, negima, tsukune, kawa, bonjiri, hatsu, reba</td><td class="num">$6-$8</td><td>30-50% premium over South Bay</td></tr>
+<tr><td>Premium skewers</td><td>A5 Wagyu, gyutan, kurobuta pork belly</td><td class="num">$10-$18</td><td>High-margin anchor items</td></tr>
+<tr><td>Small plates</td><td>Chawanmushi, potato salad, pickles</td><td class="num">$8-$14</td><td>High contribution margin</td></tr>
+<tr><td>Omakase (8 courses)</td><td>Chef's 8 skewers + rice course</td><td class="num">$75</td><td>Entry counter experience</td></tr>
+<tr><td>Premium omakase (12)</td><td>10 skewers + wagyu + chawanmushi + dessert</td><td class="num">$110</td><td>Signature experience</td></tr>
+<tr><td>Grand omakase (15)</td><td>Full progression + 4 sake pairings</td><td class="num">$165</td><td>6 counter seats/night max</td></tr>
+</tbody>
+</table>
+
+<h3>Case Study: Why This Location, This Format</h3>
+<div class="callout">
+<p><strong>Dashi Japanese Restaurant</strong> (Menlo Park, Belle Haven) closed July 3, 2026 after 23 years. Owner John Bek blamed Meta's return-to-office policies for killing foot traffic from Belle Haven campus workers. <strong>Lesson:</strong> Do not depend on a single corporate campus. Downtown Menlo Park's mixed residential/commercial base is the correct location strategy.</p>
+</div>
+<div class="callout">
+<p><strong>Sumiya</strong> (Santa Clara) proves the model: moderate pricing, charcoal authenticity, broad menu beyond chicken, casual atmosphere, capacity to expand to 3 locations. Bay Area will pack a yakitori spot and tolerate 2-hour waits. The category works.</p>
+</div>
+</div>
+</section>
+
+<!-- FINANCIAL PROJECTIONS -->
+<section id="financials">
+<div class="container">
+<h2>Financial Projections</h2>
+
+<h3>Capital Requirements — $900,000</h3>
+<p>Assumes second-generation restaurant space with existing Type-1 hood. Raw/first-gen space would push total to $1.2M+ and materially damage the return profile.</p>
+
+<table>
+<thead>
+<tr><th>Category</th><th>Line Item</th><th class="num">Amount</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="4"><strong>Build-Out</strong></td><td>Tenant improvements (1,450 SF × $200/SF)</td><td class="num">$290,000</td></tr>
+<tr><td>Ventilation upgrade (enhanced Type-I hood, fire suppression)</td><td class="num">$45,000</td></tr>
+<tr><td>Architectural & design fees</td><td class="num">$20,000</td></tr>
+<tr><td>Permits & regulatory</td><td class="num">$15,000</td></tr>
+<tr style="background:#EDF2F7;font-weight:600"><td></td><td>Subtotal Construction</td><td class="num">$370,000</td></tr>
+<tr><td rowspan="4"><strong>Equipment</strong></td><td>Yakitori station (3 konro + 1 Mibrasa robatayaki)</td><td class="num">$35,000</td></tr>
+<tr><td>Commercial kitchen package</td><td class="num">$80,000</td></tr>
+<tr><td>Bar equipment</td><td class="num">$15,000</td></tr>
+<tr><td>POS system (Toast/Revel + KDS)</td><td class="num">$12,000</td></tr>
+<tr style="background:#EDF2F7;font-weight:600"><td></td><td>Subtotal Equipment</td><td class="num">$142,000</td></tr>
+<tr><td rowspan="3"><strong>FF&E</strong></td><td>Hinoki counter, tables, chairs, banquette</td><td class="num">$40,000</td></tr>
+<tr><td>Signage & exterior</td><td class="num">$10,000</td></tr>
+<tr><td>Branding, menu design, website</td><td class="num">$8,000</td></tr>
+<tr style="background:#EDF2F7;font-weight:600"><td></td><td>Subtotal FF&E</td><td class="num">$58,000</td></tr>
+<tr><td rowspan="5"><strong>Pre-Opening</strong></td><td>Type 47 liquor license</td><td class="num">$25,000</td></tr>
+<tr><td>Staff recruiting, training, soft opening</td><td class="num">$40,000</td></tr>
+<tr><td>Initial F&B inventory</td><td class="num">$12,000</td></tr>
+<tr><td>Supplies (charcoal stock, smallwares)</td><td class="num">$8,000</td></tr>
+<tr><td>Lease deposits (first + last + security)</td><td class="num">$22,500</td></tr>
+<tr style="background:#EDF2F7;font-weight:600"><td></td><td>Subtotal Pre-Opening</td><td class="num">$107,500</td></tr>
+<tr><td rowspan="2"><strong>Buffer</strong></td><td>Working capital (3 months operating)</td><td class="num">$140,000</td></tr>
+<tr><td>Contingency (15% of hard costs)</td><td class="num">$82,500</td></tr>
+<tr style="background:var(--navy);color:var(--white);font-weight:700"><td></td><td>TOTAL</td><td class="num">$900,000</td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+<strong>Funding note:</strong> Optimal structure for a high-income tech professional: $500K-$600K personal equity + $300K-$400K SBA 7(a) loan (current rate ~10.5%, 10-year term). All-equity eliminates debt service risk during Y1 ramp but reduces IRR leverage.
+</div>
+
+<h3>Year 1 Monthly Revenue Ramp</h3>
+<table>
+<thead>
+<tr><th>Month</th><th class="num">Revenue</th><th class="num">COGS</th><th class="num">Labor</th><th class="num">Fixed</th><th class="num">EBITDA</th><th class="num">Margin</th></tr>
+</thead>
+<tbody>
+<tr><td>M1</td><td class="num">$35K</td><td class="num">$11.6K</td><td class="num">$23K</td><td class="num">$20K</td><td class="num neg">($19.6K)</td><td class="num neg">-56%</td></tr>
+<tr><td>M2</td><td class="num">$44K</td><td class="num">$14.5K</td><td class="num">$23K</td><td class="num">$18K</td><td class="num neg">($11.5K)</td><td class="num neg">-26%</td></tr>
+<tr><td>M3</td><td class="num">$54K</td><td class="num">$17.3K</td><td class="num">$25K</td><td class="num">$18K</td><td class="num neg">($6.3K)</td><td class="num neg">-12%</td></tr>
+<tr><td>M4</td><td class="num">$64K</td><td class="num">$19.8K</td><td class="num">$27K</td><td class="num">$18K</td><td class="num neg">($0.8K)</td><td class="num neg">-1%</td></tr>
+<tr style="background:#F0FFF4"><td><strong>M5</strong></td><td class="num"><strong>$69K</strong></td><td class="num">$21.4K</td><td class="num">$28K</td><td class="num">$17K</td><td class="num pos"><strong>$2.6K</strong></td><td class="num pos"><strong>4%</strong></td></tr>
+<tr><td>M6</td><td class="num">$74K</td><td class="num">$22.2K</td><td class="num">$29K</td><td class="num">$17K</td><td class="num pos">$5.8K</td><td class="num pos">8%</td></tr>
+<tr><td>M7</td><td class="num">$79K</td><td class="num">$23.7K</td><td class="num">$30K</td><td class="num">$17K</td><td class="num pos">$8.3K</td><td class="num pos">11%</td></tr>
+<tr><td>M8</td><td class="num">$84K</td><td class="num">$25.2K</td><td class="num">$31K</td><td class="num">$17K</td><td class="num pos">$10.8K</td><td class="num pos">13%</td></tr>
+<tr><td>M9</td><td class="num">$87K</td><td class="num">$26.1K</td><td class="num">$31K</td><td class="num">$17K</td><td class="num pos">$12.9K</td><td class="num pos">15%</td></tr>
+<tr><td>M10</td><td class="num">$91K</td><td class="num">$27.3K</td><td class="num">$32K</td><td class="num">$17K</td><td class="num pos">$14.7K</td><td class="num pos">16%</td></tr>
+<tr><td>M11</td><td class="num">$94K</td><td class="num">$28.2K</td><td class="num">$32K</td><td class="num">$17K</td><td class="num pos">$16.8K</td><td class="num pos">18%</td></tr>
+<tr><td>M12</td><td class="num">$97K</td><td class="num">$29.1K</td><td class="num">$32K</td><td class="num">$17K</td><td class="num pos">$18.9K</td><td class="num pos">19%</td></tr>
+<tr style="background:var(--navy);color:var(--white);font-weight:600"><td>Y1 Total</td><td class="num">$872K</td><td class="num">$266K</td><td class="num">$343K</td><td class="num">$210K</td><td class="num">($23K)</td><td class="num">-2.6%</td></tr>
+</tbody>
+</table>
+
+<h3>Annual P&L — Years 1-5</h3>
+<table>
+<thead>
+<tr><th></th><th class="num">Year 1</th><th class="num">Year 2</th><th class="num">Year 3</th><th class="num">Year 4</th><th class="num">Year 5</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Revenue</strong></td><td class="num">$872K</td><td class="num">$1,200K</td><td class="num">$1,300K</td><td class="num">$1,380K</td><td class="num">$1,450K</td></tr>
+<tr><td>COGS</td><td class="num">$266K</td><td class="num">$360K</td><td class="num">$390K</td><td class="num">$414K</td><td class="num">$435K</td></tr>
+<tr><td style="color:var(--text-muted);font-size:0.82rem">&nbsp;&nbsp;% of revenue</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">30.5%</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">30.0%</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">30.0%</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">30.0%</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">30.0%</td></tr>
+<tr style="font-weight:600"><td>Gross Profit</td><td class="num">$606K</td><td class="num">$840K</td><td class="num">$910K</td><td class="num">$966K</td><td class="num">$1,015K</td></tr>
+<tr><td>Labor</td><td class="num">$343K</td><td class="num">$384K</td><td class="num">$410K</td><td class="num">$428K</td><td class="num">$449K</td></tr>
+<tr><td style="color:var(--text-muted);font-size:0.82rem">&nbsp;&nbsp;% of revenue</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">39.3%</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">32.0%</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">31.5%</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">31.0%</td><td class="num" style="color:var(--text-muted);font-size:0.82rem">31.0%</td></tr>
+<tr style="background:#FFFDF5"><td><strong>Prime Cost</strong></td><td class="num"><strong>$609K</strong></td><td class="num"><strong>$744K</strong></td><td class="num"><strong>$800K</strong></td><td class="num"><strong>$842K</strong></td><td class="num"><strong>$884K</strong></td></tr>
+<tr style="background:#FFFDF5;font-size:0.82rem"><td>&nbsp;&nbsp;% of revenue</td><td class="num">69.8%</td><td class="num">62.0%</td><td class="num">61.5%</td><td class="num">61.0%</td><td class="num">61.0%</td></tr>
+<tr><td>Rent + NNN</td><td class="num">$90K</td><td class="num">$93K</td><td class="num">$96K</td><td class="num">$98K</td><td class="num">$101K</td></tr>
+<tr><td>Other OpEx</td><td class="num">$196K</td><td class="num">$168K</td><td class="num">$175K</td><td class="num">$182K</td><td class="num">$188K</td></tr>
+<tr style="background:var(--navy);color:var(--white);font-weight:700"><td>EBITDA</td><td class="num neg" style="color:#FEB2B2">($23K)</td><td class="num" style="color:#9AE6B4">$195K</td><td class="num" style="color:#9AE6B4">$229K</td><td class="num" style="color:#9AE6B4">$258K</td><td class="num" style="color:#9AE6B4">$277K</td></tr>
+<tr style="background:var(--navy);color:rgba(255,255,255,0.7);font-size:0.82rem"><td>&nbsp;&nbsp;margin</td><td class="num">-2.6%</td><td class="num">16.2%</td><td class="num">17.6%</td><td class="num">18.7%</td><td class="num">19.1%</td></tr>
+<tr><td>D&A</td><td class="num">$30K</td><td class="num">$30K</td><td class="num">$30K</td><td class="num">$30K</td><td class="num">$30K</td></tr>
+<tr style="font-weight:600"><td>Pre-Tax Income</td><td class="num neg">($53K)</td><td class="num pos">$165K</td><td class="num pos">$199K</td><td class="num pos">$228K</td><td class="num pos">$247K</td></tr>
+<tr><td>After-Tax (25% eff.)</td><td class="num neg">($53K)</td><td class="num pos">$124K</td><td class="num pos">$149K</td><td class="num pos">$171K</td><td class="num pos">$185K</td></tr>
+</tbody>
+</table>
+
+<div class="metrics-grid" style="grid-template-columns:repeat(3,1fr);margin-top:2rem">
+<div class="metric-card">
+<div class="value" style="font-size:1.4rem">$6.2M</div>
+<div class="label">5-Year Cumulative Revenue</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.4rem">$936K</div>
+<div class="label">5-Year Cumulative EBITDA</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.4rem">$576K</div>
+<div class="label">5-Year After-Tax Income</div>
+</div>
+</div>
+
+<h3>Break-Even Analysis</h3>
+<div class="two-col">
+<div>
+<h4>Monthly Operating Break-Even</h4>
+<table>
+<tbody>
+<tr><td>Fixed costs/month</td><td class="num">$23,700</td></tr>
+<tr><td>Variable cost ratio</td><td class="num">54.5%</td></tr>
+<tr><td>Contribution margin</td><td class="num">45.5%</td></tr>
+<tr style="font-weight:700"><td>Break-even revenue</td><td class="num">$52,100/mo</td></tr>
+<tr><td>Daily break-even</td><td class="num">$2,004</td></tr>
+<tr><td>Implied daily covers</td><td class="num">40 @ $50 check</td></tr>
+<tr><td>Seat turns required</td><td class="num">1.14 (of 35 seats)</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4>Investment Payback</h4>
+<table>
+<tbody>
+<tr><td>End Y1</td><td class="num neg">-$923K</td></tr>
+<tr><td>End Y2</td><td class="num neg">-$728K</td></tr>
+<tr><td>End Y3</td><td class="num neg">-$499K</td></tr>
+<tr><td>End Y4</td><td class="num neg">-$241K</td></tr>
+<tr style="font-weight:700"><td>End Y5</td><td class="num pos">+$36K</td></tr>
+<tr style="background:#F0FFF4;font-weight:600"><td>Payback period</td><td class="num">~4.9 years</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3>Sensitivity Analysis — Three Scenarios</h3>
+
+<div class="bar-chart" style="margin:2rem 0">
+<p style="font-weight:600;margin-bottom:1rem;font-size:0.9rem">Year 2 EBITDA by Scenario</p>
+<div class="bar-row"><span class="bar-label">Bull (+15% rev)</span><div class="bar-track"><div class="bar-fill success" style="width:82%">$270K (19.6%)</div></div></div>
+<div class="bar-row"><span class="bar-label">Base case</span><div class="bar-track"><div class="bar-fill navy" style="width:63%">$195K (16.2%)</div></div></div>
+<div class="bar-row"><span class="bar-label">Bear: rent +30%</span><div class="bar-track"><div class="bar-fill warning" style="width:54%">$168K (14.0%)</div></div></div>
+<div class="bar-row"><span class="bar-label">Bear: COGS +15%</span><div class="bar-track"><div class="bar-fill warning" style="width:45%">$141K (11.8%)</div></div></div>
+<div class="bar-row"><span class="bar-label">Bear: check -20%</span><div class="bar-track"><div class="bar-fill danger" style="width:20%">$63K (6.6%)</div></div></div>
+</div>
+
+<table>
+<thead>
+<tr><th>Scenario</th><th class="num">Y2 EBITDA</th><th class="num">5yr IRR</th><th class="num">Payback</th><th>Verdict</th></tr>
+</thead>
+<tbody>
+<tr><td>Bull: revenue +15%</td><td class="num pos">$270K</td><td class="num pos">~28%</td><td class="num">~3.8yr</td><td><span class="risk-low">Strong Go</span></td></tr>
+<tr><td><strong>Base case</strong></td><td class="num"><strong>$195K</strong></td><td class="num"><strong>~19%</strong></td><td class="num"><strong>4.9yr</strong></td><td><span class="risk-med">Conditional Go</span></td></tr>
+<tr><td>Bear: rent +30%</td><td class="num">$168K</td><td class="num">~15%</td><td class="num">~5.3yr</td><td><span class="risk-med">Still Viable</span></td></tr>
+<tr><td>Bear: COGS +15%</td><td class="num">$141K</td><td class="num">~12%</td><td class="num">~5.8yr</td><td><span class="risk-med">Viable w/ Response</span></td></tr>
+<tr><td>Bear: avg check -20%</td><td class="num neg">$63K</td><td class="num neg">~3%</td><td class="num neg">>7yr</td><td><span class="risk-high">Model Breaks</span></td></tr>
+</tbody>
+</table>
+
+<div class="callout danger">
+<strong>Critical sensitivity:</strong> A $40 average check (-20%) is existential. The restaurant survives (barely positive EBITDA) but never returns the $900K investment in any reasonable timeframe. Rent and food cost fluctuations are survivable; pricing power is the single variable that determines whether this investment works.
+</div>
+
+<h3>Cost Structure at Steady State (Year 2)</h3>
+<div class="bar-chart">
+<p style="font-weight:600;margin-bottom:1rem;font-size:0.9rem">Percentage of Revenue</p>
+<div class="bar-row"><span class="bar-label">COGS</span><div class="bar-track"><div class="bar-fill navy" style="width:60%">30.0%</div></div></div>
+<div class="bar-row"><span class="bar-label">Labor</span><div class="bar-track"><div class="bar-fill navy" style="width:64%">32.0%</div></div></div>
+<div class="bar-row"><span class="bar-label">Rent + NNN</span><div class="bar-track"><div class="bar-fill gold" style="width:15.4%">7.7%</div></div></div>
+<div class="bar-row"><span class="bar-label">Other OpEx</span><div class="bar-track"><div class="bar-fill gold" style="width:28%">14.0%</div></div></div>
+<div class="bar-row"><span class="bar-label">EBITDA</span><div class="bar-track"><div class="bar-fill success" style="width:32.4%">16.2%</div></div></div>
+</div>
+</div>
+</section>
+
+<!-- GO-TO-MARKET -->
+<section id="gtm">
+<div class="container">
+<h2>Go-to-Market Strategy</h2>
+
+<h3>Brand Positioning</h3>
+<p>The recommended name is <strong>TORI</strong> (鳥, "bird"). It's the sharpest positioning statement: one syllable, immediately communicates the concept, works for search and word-of-mouth. In a market with zero dedicated yakitori, owning the category name is the power move.</p>
+
+<div class="two-col">
+<div>
+<h4>Target Segments</h4>
+<table>
+<tbody>
+<tr><td><strong>Primary</strong></td><td>Menlo Park/Atherton residents, $150K+ HHI, regular diners, 28-55 age range</td></tr>
+<tr><td><strong>Secondary</strong></td><td>Tech workers (Meta, Robinhood, VC firms), Stanford faculty/visitors, Caltrain corridor commuters</td></tr>
+<tr><td><strong>Tertiary</strong></td><td>Japanese cuisine enthusiasts from wider Peninsula, food tourists from SF/South Bay</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4>Brand Pillars</h4>
+<table>
+<tbody>
+<tr><td>🔥 Craft</td><td>Binchotan charcoal, nose-to-tail chicken, Japanese technique</td></tr>
+<tr><td>🎭 Theater</td><td>Open grill, counter seating, chef interaction</td></tr>
+<tr><td>🌿 Quality</td><td>Heritage breed poultry, seasonal ingredients, curated sake</td></tr>
+<tr><td>📍 Local</td><td>"Menlo Park's only dedicated yakitori" — category ownership</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3>Pre-Launch (3 months before opening)</h3>
+<div class="metrics-grid" style="grid-template-columns:repeat(4,1fr)">
+<div class="metric-card">
+<div class="value" style="font-size:1.1rem">📋</div>
+<div class="label">500+ Waitlist</div>
+<div class="note">Landing page + local PR</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.1rem">📸</div>
+<div class="label">Instagram Build</div>
+<div class="note">Construction progress, grill master profile</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.1rem">🍽️</div>
+<div class="label">Soft Opening</div>
+<div class="note">2-week friends & family at 50% capacity</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.1rem">📝</div>
+<div class="label">Food Blogger Push</div>
+<div class="note">Eater SF, Infatuation, local critics</div>
+</div>
+</div>
+
+<h3>Launch & Growth Roadmap</h3>
+<table>
+<thead>
+<tr><th>Phase</th><th>Timeline</th><th>Focus</th><th>KPIs</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Soft Launch</strong></td><td>Weeks 1-2</td><td>Friends & family, staff training under real conditions, menu calibration</td><td>Server timing, dish consistency, POS accuracy</td></tr>
+<tr><td><strong>Ramp</strong></td><td>Months 1-3</td><td>Build local awareness, earn first reviews, establish regulars</td><td>40+ covers/night, 4.3+ Yelp/Google, 30% return rate</td></tr>
+<tr><td><strong>Stabilize</strong></td><td>Months 4-6</td><td>Hit operating break-even, refine menu, introduce omakase counter</td><td>$52K+ monthly revenue, stable food cost 30%</td></tr>
+<tr><td><strong>Optimize</strong></td><td>Months 7-12</td><td>Full capacity evenings, weekend lunch test, corporate/catering</td><td>2.0+ seat turns, prime cost <63%</td></tr>
+<tr><td><strong>Expand</strong></td><td>Year 2-3</td><td>Weekend lunch permanent, private dining, sake dinner events</td><td>$100K/mo revenue, 16%+ EBITDA</td></tr>
+</tbody>
+</table>
+
+<h3>Marketing Channels</h3>
+<div class="two-col">
+<div>
+<h4>Organic (65% of marketing effort)</h4>
+<ul style="list-style:none;padding:0">
+<li style="padding:0.3rem 0">→ Instagram (grill shots, behind-counter reels, seasonal specials)</li>
+<li style="padding:0.3rem 0">→ Google Business profile optimization</li>
+<li style="padding:0.3rem 0">→ Yelp presence and response management</li>
+<li style="padding:0.3rem 0">→ Local partnerships (Stanford, Menlo Park businesses)</li>
+<li style="padding:0.3rem 0">→ OpenTable, Resy listing with online booking</li>
+</ul>
+</div>
+<div>
+<h4>Paid (35% of marketing effort)</h4>
+<ul style="list-style:none;padding:0">
+<li style="padding:0.3rem 0">→ Instagram/Meta geo-targeted ads (3mi radius)</li>
+<li style="padding:0.3rem 0">→ Google local search ads ("yakitori near me")</li>
+<li style="padding:0.3rem 0">→ Eater SF / Infatuation sponsored placement</li>
+<li style="padding:0.3rem 0">→ Nextdoor promoted posts (Menlo Park, Atherton)</li>
+<li style="padding:0.3rem 0">→ Monthly budget: $4K launch, scaling to $2K steady state</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<!-- RISK ASSESSMENT -->
+<section id="risk">
+<div class="container">
+<h2>Risk Assessment</h2>
+
+<p>The top 10 risks are ranked by composite score (Likelihood × Impact, each on a 1-5 scale). Three risks score above 15, representing the most significant threats to the investment thesis.</p>
+
+<table>
+<thead>
+<tr><th style="width:30px">#</th><th>Risk Factor</th><th class="num">L</th><th class="num">I</th><th class="num">Score</th><th style="width:100px">Rating</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><strong>Yakitori-shi recruitment & retention</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Trained grill masters extremely scarce in the US. No domestic pipeline. One resignation = concept collapse.</span></td><td class="num">4</td><td class="num">5</td><td class="num"><strong>20</strong></td><td><span class="risk-high">Critical</span></td></tr>
+<tr><td>2</td><td><strong>Construction cost overrun</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Bay Area at $211/sqft average (highest US market). 30% overrun = +$111K, pushes total past $1M.</span></td><td class="num">4</td><td class="num">4</td><td class="num"><strong>16</strong></td><td><span class="risk-high">High</span></td></tr>
+<tr><td>3</td><td><strong>Slower revenue ramp</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">If ramp takes 18+ months, Y1 losses double to ~$100K, consuming working capital reserve.</span></td><td class="num">3</td><td class="num">5</td><td class="num"><strong>15</strong></td><td><span class="risk-high">High</span></td></tr>
+<tr><td>4</td><td><strong>California labor cost escalation</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Each $1/hr increase adds ~$20K/yr. Menlo Park at $17.55 likely reaches $19-20 by Y3.</span></td><td class="num">5</td><td class="num">3</td><td class="num"><strong>15</strong></td><td><span class="risk-high">High</span></td></tr>
+<tr><td>5</td><td><strong>Economic downturn / tech layoffs</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Menlo Park heavily tech-dependent. 2022-23 layoff cycle caused 15-25% traffic decline.</span></td><td class="num">3</td><td class="num">4</td><td class="num"><strong>12</strong></td><td><span class="risk-med">Medium</span></td></tr>
+<tr><td>6</td><td><strong>Competitive entry post-proof</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Success validates gap. Sumiya, Kokko, or a well-funded group could target the Peninsula.</span></td><td class="num">3</td><td class="num">4</td><td class="num"><strong>12</strong></td><td><span class="risk-med">Medium</span></td></tr>
+<tr><td>7</td><td><strong>Charcoal regulatory risk</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">BAAQMD permitting for indoor charcoal use. Ventilation requirements may exceed estimates.</span></td><td class="num">2</td><td class="num">5</td><td class="num"><strong>10</strong></td><td><span class="risk-med">Medium</span></td></tr>
+<tr><td>8</td><td><strong>Supply chain (binchotan)</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Premium binchotan imported from Japan. $36K/yr charcoal cost vulnerable to trade disruption.</span></td><td class="num">2</td><td class="num">4</td><td class="num"><strong>8</strong></td><td><span class="risk-low">Low-Med</span></td></tr>
+<tr><td>9</td><td><strong>Lease renewal shock</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Menlo Park commercial rates climbing. Lock 5-year term with 3% annual escalation cap.</span></td><td class="num">3</td><td class="num">3</td><td class="num"><strong>9</strong></td><td><span class="risk-low">Low-Med</span></td></tr>
+<tr><td>10</td><td><strong>Food safety incident</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Chicken-forward menu elevates food safety stakes. One incident in a small community is devastating.</span></td><td class="num">1</td><td class="num">5</td><td class="num"><strong>5</strong></td><td><span class="risk-low">Low</span></td></tr>
+</tbody>
+</table>
+
+<div class="callout warn">
+<strong>Risk concentration:</strong> The top 4 risks all score ≥15 and share a common thread: they cannot be fully mitigated with money alone. Talent scarcity, construction complexity, ramp uncertainty, and regulatory labor costs require operational excellence, not just capital.
+</div>
+</div>
+</section>
+
+<!-- RETURNS COMPARISON -->
+<section id="returns">
+<div class="container">
+<h2>Return on Investment Comparison</h2>
+
+<h3>5-Year Cash Flow Schedule</h3>
+<table>
+<thead>
+<tr><th>Year</th><th class="num">Operating Cash Flow</th><th class="num">Terminal Value</th><th class="num">Total</th><th class="num">Cumulative</th></tr>
+</thead>
+<tbody>
+<tr><td>Y0</td><td class="num neg">-$900,000</td><td class="num">-</td><td class="num neg">-$900,000</td><td class="num neg">-$900,000</td></tr>
+<tr><td>Y1</td><td class="num neg">-$23,000</td><td class="num">-</td><td class="num neg">-$23,000</td><td class="num neg">-$923,000</td></tr>
+<tr><td>Y2</td><td class="num pos">+$195,000</td><td class="num">-</td><td class="num pos">+$195,000</td><td class="num neg">-$728,000</td></tr>
+<tr><td>Y3</td><td class="num pos">+$229,000</td><td class="num">-</td><td class="num pos">+$229,000</td><td class="num neg">-$499,000</td></tr>
+<tr><td>Y4</td><td class="num pos">+$258,000</td><td class="num">-</td><td class="num pos">+$258,000</td><td class="num neg">-$241,000</td></tr>
+<tr><td>Y5</td><td class="num pos">+$277,000</td><td class="num">+$970,000</td><td class="num pos">+$1,247,000</td><td class="num pos">+$306,000</td></tr>
+</tbody>
+</table>
+<p style="font-size:0.82rem;color:var(--text-muted)">Terminal value: 3.5× trailing EBITDA ($277K × 3.5 = $970K). Restaurant multiples range 2-5× EBITDA; 3.5× reflects a profitable single-unit concept in a premium market.</p>
+
+<h3>Alternative Investment Comparison</h3>
+<table>
+<thead>
+<tr><th>Vehicle</th><th class="num">5yr Value</th><th class="num">IRR</th><th class="num">Risk</th><th>Effort</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Yakitori restaurant</strong></td><td class="num">$1,906K</td><td class="num">~19%</td><td><span class="risk-high">High</span></td><td>50-70 hrs/wk (Y1-2)</td></tr>
+<tr><td>S&P 500 index fund</td><td class="num">$1,449K</td><td class="num">10%</td><td><span class="risk-low">Moderate</span></td><td>Zero</td></tr>
+<tr><td>Bay Area rental property</td><td class="num">$1,350K</td><td class="num">12-14%</td><td><span class="risk-med">Low-Med</span></td><td>5-10 hrs/wk</td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+<strong>Honest assessment:</strong> The yakitori restaurant produces the highest nominal return but at substantially higher risk. The 19% IRR includes compensation for execution risk and sweat equity. A passive investor hiring a GM ($80-100K salary) sees Y2 EBITDA drop to ~$100K (8.3%), extending payback to 7+ years and producing risk-adjusted returns inferior to the S&P 500.
+</div>
+
+<h3>Key Return Metrics</h3>
+<div class="metrics-grid" style="grid-template-columns:repeat(4,1fr)">
+<div class="metric-card">
+<div class="value" style="font-size:1.4rem">~19%</div>
+<div class="label">IRR (Base)</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.4rem">$347K</div>
+<div class="label">NPV @ 10%</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.4rem">2.1×</div>
+<div class="label">5yr MOIC</div>
+</div>
+<div class="metric-card">
+<div class="value" style="font-size:1.4rem">4.9yr</div>
+<div class="label">Payback Period</div>
+</div>
+</div>
+
+<p>NPV turns negative at a 20% discount rate (-$36K), confirming the concept does not clear a venture-style hurdle. This is consistent with restaurant risk profiles: this is a solid small business investment, not a venture return.</p>
+</div>
+</section>
+
+<!-- RECOMMENDATION -->
+<section id="recommendation" style="background:var(--navy);color:var(--white)">
+<div class="container" style="padding-top:4rem;padding-bottom:4rem">
+<h2 style="color:var(--gold);border-bottom-color:rgba(197,165,114,0.3)">Recommendation</h2>
+
+<div style="text-align:center;margin:2rem 0">
+<div class="verdict-badge" style="font-size:1.1rem">
+<div>
+<div class="label">Final Verdict</div>
+<div class="verdict" style="font-size:2rem">CONDITIONAL GO</div>
+</div>
+</div>
+</div>
+
+<p style="color:rgba(255,255,255,0.85);font-size:1.05rem;max-width:800px;margin:0 auto 2rem">The financial model supports the investment thesis. A dedicated yakitori restaurant in Menlo Park would fill a verified market gap, serve one of America's wealthiest demographics, and ride a genuine category tailwind. Base case returns are attractive: 19% IRR, $347K NPV, 2.1× MOIC over 5 years. Steady-state EBITDA of 16-19% exceeds the 8-12% Japanese restaurant average.</p>
+
+<p style="color:rgba(255,255,255,0.85);margin-bottom:2rem">But this is a restaurant investment. The numbers look good precisely because they assume strong execution in one of the most failure-prone business categories in America. The verdict is conditional on three non-negotiable prerequisites:</p>
+
+<div class="prereq" style="background:rgba(255,255,255,0.05);border-color:var(--gold)">
+<p style="margin-bottom:0.5rem"><span class="num">1</span> <strong style="color:var(--gold)">Secure the grill master first.</strong></p>
+<p style="color:rgba(255,255,255,0.75);margin:0;font-size:0.92rem">Do not sign a lease until you have a committed yakitori-shi. This is the single biggest execution risk. Budget $85K-$100K total compensation with equity kicker. Consider a recruiting trip to Japan or partnership with an established yakitori group (Edomasa model).</p>
+</div>
+
+<div class="prereq" style="background:rgba(255,255,255,0.05);border-color:var(--gold)">
+<p style="margin-bottom:0.5rem"><span class="num">2</span> <strong style="color:var(--gold)">Lock a second-gen space with existing hood at ≤$65/SF gross.</strong></p>
+<p style="color:rgba(255,255,255,0.75);margin:0;font-size:0.92rem">The model requires a second-generation restaurant space to keep build-out under $400K. The 1010 Doyle Street listing (1,314 SF, existing Type-1 hood, endcap visibility) is ideal. At raw/first-gen space pricing, total capital jumps to $1.2M+ and returns deteriorate sharply.</p>
+</div>
+
+<div class="prereq" style="background:rgba(255,255,255,0.05);border-color:var(--gold)">
+<p style="margin-bottom:0.5rem"><span class="num">3</span> <strong style="color:var(--gold)">Decide: owner-operator or passive investor.</strong></p>
+<p style="color:rgba(255,255,255,0.75);margin:0;font-size:0.92rem">This is binary. As owner-operator (50-70 hrs/week in Y1-2), the model works as shown. As passive investor hiring a GM ($80-100K), Y2 EBITDA drops to ~$100K (8.3%), payback extends to 7+ years, and risk-adjusted returns fall below S&P 500. A passive investor needs an experienced operating partner taking 20-30% equity.</p>
+</div>
+
+<div style="margin-top:2rem;padding:1.5rem;border:1px solid rgba(197,165,114,0.3);border-radius:8px">
+<p style="color:var(--gold);font-weight:700;margin-bottom:0.5rem">If the three prerequisites can be met:</p>
+<p style="color:rgba(255,255,255,0.8);margin:0">Proceed to LOI on a space. If any cannot be met within 6 months, walk away. The opportunity cost of $900K in dead capital during a pre-opening search is ~$90K/year in foregone market returns.</p>
+</div>
+</div>
+</section>
+
+<!-- APPENDIX -->
+<section id="appendix">
+<div class="container">
+<h2>Appendix</h2>
+
+<h3>A. Unit Economics Detail</h3>
+<div class="two-col">
+<div>
+<h4>Revenue Assumptions</h4>
+<table>
+<tbody>
+<tr><td>Seats</td><td class="num">35</td></tr>
+<tr><td>Seat turns (steady state)</td><td class="num">2.2/night</td></tr>
+<tr><td>Average check</td><td class="num">$50</td></tr>
+<tr><td>Operating days/year</td><td class="num">312 (6 days/wk)</td></tr>
+<tr><td>Steady-state utilization</td><td class="num">98%</td></tr>
+<tr style="font-weight:700"><td>Annual revenue (Y2)</td><td class="num">$1,200,000</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4>Cost Benchmarks (Bay Area)</h4>
+<table>
+<tbody>
+<tr><td>Binchotan charcoal</td><td class="num">$2.40-$7.00/lb</td></tr>
+<tr><td>Daily consumption</td><td class="num">15-30 lbs</td></tr>
+<tr><td>Annual charcoal cost</td><td class="num">~$36,000</td></tr>
+<tr><td>NorCal fit-out cost</td><td class="num">$211/sqft avg</td></tr>
+<tr><td>CA minimum wage (2026)</td><td class="num">$16.90/hr</td></tr>
+<tr><td>Menlo Park minimum</td><td class="num">$17.55/hr</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3>B. Staffing Model</h3>
+<table>
+<thead>
+<tr><th>Role</th><th class="num">Headcount</th><th class="num">Annual Comp</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Yakitori-shi (grill master)</td><td class="num">1</td><td class="num">$85,000-$100,000</td><td>Requires Japan training; equity kicker recommended</td></tr>
+<tr><td>Line cook</td><td class="num">2</td><td class="num">$45,000 ea</td><td>Prep, cold items, rice, sides</td></tr>
+<tr><td>Servers</td><td class="num">3-4</td><td class="num">$17.55/hr + tips</td><td>No tip credit in California</td></tr>
+<tr><td>Bartender</td><td class="num">1</td><td class="num">$20/hr + tips</td><td>Sake & cocktail specialist</td></tr>
+<tr><td>Dishwasher/prep</td><td class="num">1</td><td class="num">$17.55/hr</td><td>Full-time</td></tr>
+<tr><td>Host</td><td class="num">1</td><td class="num">$17.55/hr</td><td>Part-time, evenings</td></tr>
+</tbody>
+</table>
+
+<h3>C. Real Estate Opportunity</h3>
+<table>
+<thead>
+<tr><th>Property</th><th class="num">Size</th><th class="num">Rate</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>1010 Doyle St</strong> (recommended)</td><td class="num">1,314 SF</td><td class="num">~$55/SF/yr</td><td>Existing Type-1 hood, full kitchen, endcap visibility</td></tr>
+<tr><td>Downtown Santa Cruz Ave corridor</td><td class="num">Varies</td><td class="num">$42-$58/SF</td><td>Higher foot traffic, higher rent, likely raw space</td></tr>
+</tbody>
+</table>
+
+<h3>D. Comparable Market Success</h3>
+<table>
+<thead>
+<tr><th>Restaurant</th><th>Location</th><th>Key Takeaway</th></tr>
+</thead>
+<tbody>
+<tr><td>Sumiya</td><td>Santa Clara (3 locations)</td><td>Moderate pricing, broad menu, 2-hour waits, expandable format</td></tr>
+<tr><td>Yakitori Hachibei</td><td>Japantown SF</td><td>Tiny counter concept, premium pricing, cult following</td></tr>
+<tr><td>Rintaro</td><td>SF Mission</td><td>Izakaya hybrid with strong charcoal program, 4.5+ stars</td></tr>
+<tr><td>Drunken Monk</td><td>Menlo Park</td><td>Proves local pricing power at 2× South Bay izakayas</td></tr>
+<tr><td>Togakushi (Toga)</td><td>SF</td><td>Yakitori + broader Japanese, social-media-driven</td></tr>
+</tbody>
+</table>
+
+<h3>E. Key Failure Lessons</h3>
+<table>
+<thead>
+<tr><th>Restaurant</th><th>Location</th><th>Failure Mode</th><th>Lesson</th></tr>
+</thead>
+<tbody>
+<tr><td>Dashi</td><td>Menlo Park (Belle Haven)</td><td>Over-reliance on Meta campus traffic</td><td>Do not depend on single corporate campus</td></tr>
+<tr><td>Kaygetsu</td><td>Menlo Park</td><td>Owner burnout, unsustainable labor intensity</td><td>Plan for succession, cross-train staff</td></tr>
+<tr><td>Maum</td><td>Palo Alto</td><td>Inflexible communal-only format</td><td>Offer format flexibility (counter + tables)</td></tr>
+<tr><td>Sushirrito</td><td>Peninsula (multiple)</td><td>Volume-dependent model in post-pandemic downtown</td><td>Don't depend on lunch traffic volume</td></tr>
+</tbody>
+</table>
+
+<h3>F. Methodology</h3>
+<p>This analysis was prepared in July 2026. Market data was sourced from U.S. Census Bureau, Bureau of Labor Statistics, Yelp, OpenTable, commercial real estate listings, BAAQMD regulations, California ABC, and primary field research. Financial projections are based on comparable restaurant performance data from the National Restaurant Association, Restaurant365 benchmarks, and Bay Area operator interviews. Competitor pricing was verified via current menu data. All projections are estimates and actual results may vary materially.</p>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<p><strong>Yakitori Restaurant Feasibility Analysis</strong> — Menlo Park, CA — Prepared July 2026</p>
+<p style="margin-top:0.5rem">Confidential. For internal evaluation purposes only.</p>
+</div>
+</footer>
+
+</body>
+</html>
